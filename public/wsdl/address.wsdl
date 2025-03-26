@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="AddressService"
+    targetNamespace="http://address.com/wsdl"
+    xmlns:tns="http://address.com/wsdl"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://address.com/wsdl">
+            <element name="GetAddressRequest">
+                <complexType>
+                    <sequence>
+                        <element name="id" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="GetAddressResponse">
+                <complexType>
+                    <sequence>
+                        <element name="street" type="xsd:string"/>
+                        <element name="city" type="xsd:string"/>
+                        <element name="zipCode" type="xsd:string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </types>
+
+    <message name="GetAddressRequestMessage">
+        <part name="parameters" element="tns:GetAddressRequest"/>
+    </message>
+
+    <message name="GetAddressResponseMessage">
+        <part name="parameters" element="tns:GetAddressResponse"/>
+    </message>
+
+    <portType name="AddressPort">
+        <operation name="GetAddress">
+            <input message="tns:GetAddressRequestMessage"/>
+            <output message="tns:GetAddressResponseMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="AddressBinding" type="tns:AddressPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetAddress">
+            <soap:operation soapAction="http://address.com/wsdl/GetAddress"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="AddressService">
+        <port name="AddressPort" binding="tns:AddressBinding">
+            <soap:address location="http://127.0.0.1:8000/api/soap/address"/>
+        </port>
+    </service>
+
+</definitions>
